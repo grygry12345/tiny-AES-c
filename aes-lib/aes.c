@@ -126,42 +126,34 @@ static void KeyExpansion(uint8_t *RoundKey, const uint8_t *Key)
   // All other round keys are found from the previous round keys.
   for (i = Nk; i < Nb * (Nr + 1); ++i)
   {
-    {
-      k = (i - 1) * 4;
-      tempa[0] = RoundKey[k + 0];
-      tempa[1] = RoundKey[k + 1];
-      tempa[2] = RoundKey[k + 2];
-      tempa[3] = RoundKey[k + 3];
-    }
+    k = (i - 1) * 4;
+    tempa[0] = RoundKey[k + 0];
+    tempa[1] = RoundKey[k + 1];
+    tempa[2] = RoundKey[k + 2];
+    tempa[3] = RoundKey[k + 3];
 
     if (i % Nk == 0)
     {
-      // This function shifts the 4 bytes in a word to the left once.
+      // Shifts the 4 bytes in a word to the left once.
       // [a0,a1,a2,a3] becomes [a1,a2,a3,a0]
+      const uint8_t u8tmp = tempa[0];
+      tempa[0] = tempa[1];
+      tempa[1] = tempa[2];
+      tempa[2] = tempa[3];
+      tempa[3] = u8tmp;
 
-      // Function RotWord()
-      {
-        const uint8_t u8tmp = tempa[0];
-        tempa[0] = tempa[1];
-        tempa[1] = tempa[2];
-        tempa[2] = tempa[3];
-        tempa[3] = u8tmp;
-      }
-
-      // SubWord() is a function that takes a four-byte input word and
+      // takes a four-byte input word and
       // applies the S-box to each of the four bytes to produce an output word.
+      tempa[0] = getSBoxValue(tempa[0]);
+      tempa[1] = getSBoxValue(tempa[1]);
+      tempa[2] = getSBoxValue(tempa[2]);
+      tempa[3] = getSBoxValue(tempa[3]);
 
-      // Function Subword()
-      {
-        tempa[0] = getSBoxValue(tempa[0]);
-        tempa[1] = getSBoxValue(tempa[1]);
-        tempa[2] = getSBoxValue(tempa[2]);
-        tempa[3] = getSBoxValue(tempa[3]);
-      }
-
+      // XOR operation with Rcon matrix
       tempa[0] = tempa[0] ^ Rcon[i / Nk];
     }
 
+    // XOR operation last initiailized word and previous 4 word 
     j = i * 4;
     k = (i - Nk) * 4;
     RoundKey[j + 0] = RoundKey[k + 0] ^ tempa[0];
@@ -354,18 +346,17 @@ static void Cipher(state_t *state, const uint8_t *RoundKey)
   // The first Nr-1 rounds are identical.
   // These Nr rounds are executed in the loop below.
   // Last one without MixColumns()
-  for (round = 1;; ++round)
+  for (round = 1; round < Nr; ++round)
   {
     SubBytes(state);
     ShiftRows(state);
-    if (round == Nr)
-    {
-      break;
-    }
     MixColumns(state);
     AddRoundKey(round, state, RoundKey);
   }
+
   // Add round key to last round
+  SubBytes(state);
+  ShiftRows(state);
   AddRoundKey(Nr, state, RoundKey);
 }
 
@@ -375,22 +366,23 @@ static void InvCipher(state_t *state, const uint8_t *RoundKey)
 
   // Add the First round key to the state before starting the rounds.
   AddRoundKey(Nr, state, RoundKey);
+  InvShiftRows(state);
+  InvSubBytes(state);
 
   // There will be Nr rounds.
   // The first Nr-1 rounds are identical.
   // These Nr rounds are executed in the loop below.
   // Last one without InvMixColumn()
-  for (round = (Nr - 1);; --round)
+  for (round = (Nr - 1); round > 0; --round)
   {
+    AddRoundKey(round, state, RoundKey);
+    InvMixColumns(state);
     InvShiftRows(state);
     InvSubBytes(state);
-    AddRoundKey(round, state, RoundKey);
-    if (round == 0)
-    {
-      break;
-    }
-    InvMixColumns(state);
   }
+
+  // Initial Round
+  AddRoundKey(round, state, RoundKey);
 }
 
 /*****************************************************************************/
