@@ -1,8 +1,8 @@
 ![CI](https://github.com/kokke/tiny-AES-c/workflows/CI/badge.svg)
+
 ### Tiny AES in C
 
 This is a small and portable implementation of the AES [ECB](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_.28ECB.29) encryption algorithms written in C.
-
 
 The API is very simple and looks like this (I am using C99 `<stdint.h>`-style annotated types):
 
@@ -16,12 +16,11 @@ void AES_ECB_decrypt(const struct AES_ctx* ctx, uint8_t* buf);
 
 ```
 
-Important notes: 
- * No padding is provided so for CBC and ECB all buffers should be multiples of 16 bytes. For padding [PKCS7](https://en.wikipedia.org/wiki/Padding_(cryptography)#PKCS7) is recommendable.
- * ECB mode is considered unsafe for most uses and is not implemented in streaming mode. If you need this mode, call the function for every block of 16 bytes you need encrypted. See [wikipedia's article on ECB](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_(ECB)) for more details.
- * This library is designed for small code size and simplicity, intended for cases where small binary size, low memory footprint and portability is more important than high performance. If speed is a concern, you can try more complex libraries, e.g. [Mbed TLS](https://tls.mbed.org/), [OpenSSL](https://www.openssl.org/) etc.
+Important notes:
 
-CBC and CTR modes have been removed onlr ECB mode available in [`aes.h`](https://github.com/kokke/tiny-AES-c/blob/master/aes.h) (read the comments for clarification).
+- ECB mode is considered unsafe for most uses and is not implemented in streaming mode. If you need this mode, call the function for every block of 16 bytes you need encrypted. See [wikipedia's article on ECB](<https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_(ECB)>) for more details.
+
+CBC and CTR modes have been removed only ECB mode available in [`aes.h`](https://github.com/kokke/tiny-AES-c/blob/master/aes.h) (read the comments for clarification).
 
 C++ support removed since no need for `#include` [aes.hpp](https://github.com/kokke/tiny-AES-c/blob/master/aes.hpp) header [aes.h](https://github.com/kokke/tiny-AES-c/blob/master/aes.h) only used.
 
@@ -35,6 +34,6 @@ This implementation is verified against the data in:
 
 The other appendices in the document are valuable for implementation details on e.g. padding, generation of IVs and nonces in CTR-mode etc.
 
-This project forked from [] [tiny-AES-c](https://github.com/kokke/tiny-AES-c) thanks for thei countributers.
+This project forked from [tiny-AES-c](https://github.com/kokke/tiny-AES-c) thanks for thei countributers.
 
 All material in this repository is in the public domain.
