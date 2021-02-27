@@ -34,6 +34,6 @@ This implementation is verified against the data in:
 
 The other appendices in the document are valuable for implementation details on e.g. padding, generation of IVs and nonces in CTR-mode etc.
 
-This project forked from [tiny-AES-c](https://github.com/kokke/tiny-AES-c) thanks for thei countributers.
+This project forked from [tiny-AES-c](https://github.com/kokke/tiny-AES-c) thanks for their contributors.
 
 All material in this repository is in the public domain.
