@@ -18,7 +18,6 @@ static const uint8_t rsbox[256] = {
     0xa0, 0xe0, 0x3b, 0x4d, 0xae, 0x2a, 0xf5, 0xb0, 0xc8, 0xeb, 0xbb, 0x3c, 0x83, 0x53, 0x99, 0x61,
     0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d};
 
-
 #define getSBoxInvert(num) (rsbox[(num)])
 
 static uint8_t xtime(uint8_t x)
@@ -139,4 +138,13 @@ void AES_ECB_decrypt(uint8_t state[4][4], const uint8_t *roundKey)
 
   // Initial Round
   AddRoundKey(round, state, roundKey);
+
+  for (uint8_t i = 0; i < 4; i++)
+  {
+    for (uint8_t j = 0; j < 4; j++)
+    {
+      printf("%.2x", state[i][j]);
+    }
+  }
+  printf("\n");
 }

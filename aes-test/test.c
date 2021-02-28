@@ -12,12 +12,12 @@ static void test_encrypt_ecb_verbose(void);
 
 int main(void)
 {
-    int exit;
+    // int exit;
 
-    exit = test_decrypt_ecb() + test_encrypt_ecb();
+    // exit = test_decrypt_ecb() + test_encrypt_ecb();
     test_encrypt_ecb_verbose();
 
-    return exit;
+    return 0;
 }
 
 // prints string as hex
@@ -45,7 +45,18 @@ static void test_encrypt_ecb_verbose(void)
     uint8_t text[AES_TEXTLEN];
     uint8_t textBlocks[AES_TEXTLEN / (4 * 4)][4][4]; // number of blocks, number of characters
     uint8_t blockNumber;
-    uint8_t blockRemainder;
+
+    // Zeroing textblocks for convinence
+    for (uint8_t i = 0; i < 16; i++)
+    {
+        for (uint8_t j = 0; j < 4; j++)
+        {
+            for (uint8_t k = 0; k < 4; k++)
+            {
+                textBlocks[i][j][k] = 0;
+            }
+        }
+    }
 
     // Get Text Input
     printf("Enter text: \n");
@@ -53,8 +64,6 @@ static void test_encrypt_ecb_verbose(void)
 
     // Find number of blocks by dividing text length 16
     blockNumber = strlen(text) / 16;
-    // Find Remainder for optimizing initialization loop
-    blockRemainder = strlen(text) % 16;
 
     // Initialize text block by 4x4 array and text block number
     for (uint8_t i = 0; i < blockNumber + 1; i++)
@@ -77,27 +86,23 @@ static void test_encrypt_ecb_verbose(void)
 
 finishInit:
 
-    // print text to encrypt, key and IV
-    printf("ECB encrypt verbose:\n\n");
-    printf("plain text:\n");
-    for (uint8_t i = 0; i < blockNumber + 1; i++)
-    {
-        print_hex(text + i * 16);
-    }
-    printf("\n");
-
     printf("key:\n");
     print_hex(key);
     printf("\n");
 
-    // print the resulting cipher as 4 x 16 byte strings
-    printf("ciphertext:\n");
-
     AES_ECB_init(key, RoundKey);
 
+    printf("ciphertext:\n");
     for (i = 0; i < blockNumber + 1; ++i)
     {
         AES_ECB_encrypt(textBlocks[i], RoundKey);
+    }
+    printf("\n");
+
+    printf("Plain text:\n");
+    for (i = 0; i < blockNumber + 1; ++i)
+    {
+        AES_ECB_decrypt(textBlocks[i], RoundKey);
     }
     printf("\n");
 }

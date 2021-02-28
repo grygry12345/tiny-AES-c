@@ -25,6 +25,5 @@
 void AES_ECB_init(const uint8_t *Key, uint8_t *roundKey);
 void AES_ECB_encrypt(uint8_t state[4][4], const uint8_t *roundKey);
 void AES_ECB_decrypt(uint8_t state[4][4], const uint8_t *roundKey);
-void AES_ECB_encrypt_text(uint8_t *state, const uint8_t *roundKey);
 
 #endif // _AES_H_
