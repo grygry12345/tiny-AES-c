@@ -59,8 +59,9 @@ static void test_encrypt_ecb_verbose(void)
     }
 
     // Get Text Input
-    printf("Enter text: \n");
+    printf("\nEnter text: \n");
     fgets(text, AES_TEXTLEN, stdin);
+    printf("\n");
 
     // Find number of blocks by dividing text length 16
     blockNumber = strlen(text) / 16;
@@ -86,13 +87,13 @@ static void test_encrypt_ecb_verbose(void)
 
 finishInit:
 
-    printf("key:\n");
+    printf("\nKey:\n");
     print_hex(key);
     printf("\n");
 
     AES_ECB_init(key, RoundKey);
 
-    printf("ciphertext:\n");
+    printf("Cipher text:\n");
     for (i = 0; i < blockNumber + 1; ++i)
     {
         AES_ECB_encrypt(textBlocks[i], RoundKey);
