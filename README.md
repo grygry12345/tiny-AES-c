@@ -13,7 +13,13 @@ void AES_ECB_decrypt(const struct AES_ctx* ctx, uint8_t* buf);
 
 ```
 
-## Important notes:
+## How to test and execute the script
+
+Test executable script is linked ```.../tiny-aes-c/build/aes-test/test```. It could executed by ```$ ./tiny-aes-c/build/aes-test/test``` command. Program is not installable yet.
+
+Scripts could be tested in ```int main(void)``` function.
+
+## Important notes
 
 ECB mode is considered unsafe for most uses. If you need this mode, call the function for every block of 16 bytes you need encrypted. See [wikipedia's article on ECB](<https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_Codebook_(ECB)>) for more details.
 
@@ -35,7 +41,7 @@ All material in this repository is in the public domain.
 
 ## Plain Text Functionailty
 
-We added plain text input.
+Also, we added plain text input in this function.
 
 ```C
 // Test plain text input
