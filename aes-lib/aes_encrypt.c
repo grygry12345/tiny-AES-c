@@ -260,7 +260,7 @@ void AES_ECB_encrypt(uint8_t state[4][4], const uint8_t *roundKey)
   {
     for (uint8_t j = 0; j < 4; j++)
     {
-      printf("%.2x", state[i][j]);
+      printf("%c", state[i][j]);
     }
   }
   printf("\n");
