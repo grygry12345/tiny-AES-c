@@ -13,6 +13,9 @@ void AES_ECB_decrypt(const struct AES_ctx* ctx, uint8_t* buf);
 
 ```
 
+## Github link in case you open in zip
+['project'](https://github.com/grygry12345/tiny-AES-c)
+
 ## How to test and execute the script
 
 Test executable script is linked ```.../tiny-aes-c/build/aes-test/test```. It could executed by ```$ ./tiny-aes-c/build/aes-test/test``` command. Program is not installable yet.
